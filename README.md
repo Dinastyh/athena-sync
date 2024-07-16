@@ -12,7 +12,7 @@ Collection of zig multithreaded/lockfree data structure and io tools
     .version = "0.0.1",
     .paths = .{""},
     .dependencies = .{
-        .athena-sync = .{
+        .@"athena-sync" = .{
             .url = "https://github.com/Dinastyh/athena-sync/archive/<some-commit-sha>.tar.gz",
             .hash = "12ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
             // leave the hash as is, the build system will tell you which hash to put here based on your commit
@@ -26,12 +26,12 @@ Collection of zig multithreaded/lockfree data structure and io tools
 ```zig
 pub fn build(b: *std.Build) !void {
     // first create a build for the dependency
-    const protobuf_dep = b.dependency("protobuf", .{
+    const athenasync_dep = b.dependency("athena-sync", .{
         .target = target,
         .optimize = optimize,
     });
 
     // and lastly use the dependency as a module
-    exe.root_module.addImport("protobuf", protobuf_dep.module("protobuf"));
+    exe.root_module.addImport("athena-sync", athenasync_dep.module("athena-sync"));
 }
 ```
