@@ -21,7 +21,7 @@ Collection of zig multithreaded/lockfree data structure and io tools
 }
 ```
 
-1. Use the `athena-sync` module
+2. Use the `athena-sync` module
 
 ```zig
 pub fn build(b: *std.Build) !void {
