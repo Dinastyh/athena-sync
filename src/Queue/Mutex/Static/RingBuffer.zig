@@ -34,13 +34,8 @@ pub fn RingBuffer(comptime T: type, comptime multi_consumer: bool, comptime size
         }
 
         fn readMultiple(self: *Self, dest: []T) error{}!usize {
-            if (multi_consumer) {
-                self.mutex.lock();
-                defer self.mutex.unlock();
-            } else {
-                self.mutex.lockShared();
-                defer self.mutex.unlockShared();
-            }
+            if (multi_consumer) self.mutex.lock() else self.mutex.lockShared();
+            defer if (multi_consumer) self.mutex.unlock() else self.mutex.unlockShared();
 
             if (self.head <= self.tail) {
                 const i = if (self.count() < dest.len) self.count() else dest.len;
@@ -84,13 +79,9 @@ pub fn RingBuffer(comptime T: type, comptime multi_consumer: bool, comptime size
         }
 
         pub fn read(self: *Self) ?T {
-            if (multi_consumer) {
-                self.mutex.lock();
-                defer self.mutex.unlock();
-            } else {
-                self.mutex.lockShared();
-                defer self.mutex.unlockShared();
-            }
+            if (multi_consumer) self.mutex.lock() else self.mutex.lockShared();
+            defer if (multi_consumer) self.mutex.unlock() else self.mutex.unlockShared();
+
             if (self.count() == 0) return null;
             const data: T = self.msgs[self.head];
             self.head = @mod(self.head + 1, self.capacity);
