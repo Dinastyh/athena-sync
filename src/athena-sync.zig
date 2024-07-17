@@ -1,1 +1,1 @@
-const Queue = @import("queue.zig").Queue;
+pub const Queue = @import("queue.zig").Queue;
